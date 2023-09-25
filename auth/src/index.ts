@@ -5,7 +5,7 @@ import { authRouter } from "./router/index";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
 import * as Sentry from "@sentry/node";
-
+import { db } from "./startup/db";
 Sentry.init({
   dsn: "",
 });
@@ -13,15 +13,16 @@ Sentry.init({
 const app = express();
 app.use(json());
 
-authRouter(app, Sentry);
+const server = app.listen(3000, async () => {
+  await db();
+  authRouter(app, Sentry);
 
+  app.all("*", async (req, res) => {
+    throw new NotFoundError();
+  });
 
-app.all("*", async (req, res) => {
-  throw new NotFoundError();
-});
-
-app.use(errorHandler);
-
-app.listen(3000, () => {
+  app.use(errorHandler);
   console.log("Listening on port 3000!!!!!!!!");
 });
+
+export default server;

@@ -1,0 +1,7 @@
+{
+  "db": "mongodb://auth-mongo-srv:27017/auth",
+  "dbOptions": {
+    "keepAliveInitialDelay": 300000,
+    "socketTimeoutMS": 30000
+  }
+}

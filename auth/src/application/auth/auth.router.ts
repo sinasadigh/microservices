@@ -1,11 +1,10 @@
 import express from "express";
+import { authController } from "./auth.controller";
 
 const router = express.Router();
 
-console.log("auth")
-router.get("/current-user", (req, res) => {
-  res.send("Hi there!");
-});
+
+router.get("/current-user", authController.currentUser);
 
 router.get("/sign-in", (req, res) => {
   res.send("sign-in!");
